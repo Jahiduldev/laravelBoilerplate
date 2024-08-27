@@ -1,27 +1,71 @@
 pipeline {
     agent any
 
+    environment {
+        // Define your environment variables here
+        COMPOSER_CACHE_DIR = "${HOME}/.composer/cache"
+    }
+
     stages {
-        stage("Build") {
-            environment {
-                DB_HOST = credentials("laravel-host")
-                DB_DATABASE = credentials("laravel-database")
-                DB_USERNAME = credentials("laravel-user")
-                DB_PASSWORD = credentials("laravel-password")
-            }
+        stage('Checkout') {
             steps {
-                sh 'php --version'
-                sh 'composer install'
-                sh 'composer --version'
-                sh 'cp .env.example .env'
-                sh 'echo DB_HOST=${DB_HOST} >> .env'
-                sh 'echo DB_USERNAME=${DB_USERNAME} >> .env'
-                sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
-                sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
-                sh 'php artisan key:generate'
-                sh 'cp .env .env.testing'
-                sh 'php artisan migrate'
+                // Checkout the code from the repository
+                git branch: 'main', url: 'https://github.com/Jahiduldev/laravelBoilerplate.git'
             }
         }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install PHP dependencies using Composer
+                sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run PHP Unit tests
+                sh 'php artisan test --no-interaction'
+            }
+        }
+
+//         stage('Static Analysis') {
+//             steps {
+//                 // Run PHP CodeSniffer or other static analysis tools
+//                 sh 'vendor/bin/phpcs --standard=PSR12 app/'
+//             }
+//         }
+
+//         stage('Build Frontend') {
+//             steps {
+//                 // Install Node.js dependencies and build frontend assets
+//                 sh 'npm install'
+//                 sh 'npm run production'
+//             }
+//         }
+
+//         stage('Deploy') {
+//             steps {
+//                 // Optional deployment steps
+//                 echo 'Deployment steps here'
+//             }
+//         }
     }
+
+//     post {
+//         always {
+//             // Cleanup actions
+//             sh 'composer clear-cache'
+//             deleteDir()
+//         }
+//
+//         success {
+//             // Actions to perform on success
+//             echo 'Pipeline completed successfully!'
+//         }
+//
+//         failure {
+//             // Actions to perform on failure
+//             echo 'Pipeline failed. Check the logs for details.'
+//         }
+//     }
 }
