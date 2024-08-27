@@ -18,7 +18,8 @@ pipeline {
             steps {
                 // Install PHP dependencies using Composer
                 //sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
-                sh 'composer install'
+                sh '/usr/local/bin/composer install'
+
             }
         }
 
