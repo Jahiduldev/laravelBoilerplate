@@ -31,11 +31,11 @@ pipeline {
     }
 
     post {
-        always {
-            // Cleanup actions
-            sh "${env.COMPOSER_BIN} clear-cache"
-            deleteDir()
-        }
+//         always {
+//             // Cleanup actions
+//             sh "${env.COMPOSER_BIN} clear-cache"
+//             deleteDir()
+//         }
 
         success {
             // Actions to perform on success
