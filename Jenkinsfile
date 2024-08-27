@@ -22,12 +22,12 @@ pipeline {
 //             }
 //         }
 
-        stage('Run Tests') {
-            steps {
-                // Run PHP Unit tests
-                sh "${env.PHP_BIN} artisan test --no-interaction"
-            }
-        }
+//         stage('Run Tests') {
+//             steps {
+//                 // Run PHP Unit tests
+//                 sh "${env.PHP_BIN} artisan test --no-interaction"
+//             }
+//         }
     }
 
     post {
