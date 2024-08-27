@@ -2,41 +2,25 @@ pipeline {
     agent any
 
     stages {
-        stage('Install Dependencies') {
+        stage("Build") {
+            environment {
+                DB_HOST = credentials("laravel-host")
+                DB_DATABASE = credentials("laravel-database")
+                DB_USERNAME = credentials("laravel-user")
+                DB_PASSWORD = credentials("laravel-password")
+            }
             steps {
-                script {
-                    // Ensure Composer is installed and install PHP dependencies
-                    sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
-                }
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                script {
-                    // Install Node.js dependencies and build frontend assets
-                    sh 'npm install'
-                    sh 'npm run prod'
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                // Clean up workspace after build
-                cleanWs()
-            }
-        }
-        success {
-            script {
-                echo 'Build completed successfully!'
-            }
-        }
-        failure {
-            script {
-                echo 'Build failed.'
+                sh 'php --version'
+                sh 'composer install'
+                sh 'composer --version'
+                sh 'cp .env.example .env'
+                sh 'echo DB_HOST=${DB_HOST} >> .env'
+                sh 'echo DB_USERNAME=${DB_USERNAME} >> .env'
+                sh 'echo DB_DATABASE=${DB_DATABASE} >> .env'
+                sh 'echo DB_PASSWORD=${DB_PASSWORD} >> .env'
+                sh 'php artisan key:generate'
+                sh 'cp .env .env.testing'
+                sh 'php artisan migrate'
             }
         }
     }
