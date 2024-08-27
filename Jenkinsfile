@@ -15,12 +15,12 @@ pipeline {
             }
         }
 
-//         stage('Install Dependencies') {
-//             steps {
-//                 // Install PHP dependencies using Composer
-//                 sh "${env.COMPOSER_BIN} install --no-interaction --prefer-dist --optimize-autoloader"
-//             }
-//         }
+        stage('Install Dependencies') {
+            steps {
+                // Install PHP dependencies using Composer
+                sh "${env.COMPOSER_BIN} install --no-interaction --prefer-dist --optimize-autoloader"
+            }
+        }
 
 //         stage('Run Tests') {
 //             steps {
