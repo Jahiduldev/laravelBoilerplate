@@ -17,7 +17,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install PHP dependencies using Composer
-                sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
+                //sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
+                sh 'composer install'
             }
         }
 
