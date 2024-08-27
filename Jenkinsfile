@@ -17,46 +17,22 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 // Install PHP dependencies using Composer
-                //sh 'composer install --no-interaction --prefer-dist --optimize-autoloader'
-                sh '/usr/local/bin/composer install'
-
+                sh '/Users/jahidulislam/.composer/vendor/bin/composer install --no-interaction --prefer-dist --optimize-autoloader'
             }
         }
 
         stage('Run Tests') {
             steps {
                 // Run PHP Unit tests
-                sh 'php artisan test --no-interaction'
+                sh '/Users/jahidulislam/Library/Application\\ Support/Herd/bin/php artisan test --no-interaction'
             }
         }
-
-//         stage('Static Analysis') {
-//             steps {
-//                 // Run PHP CodeSniffer or other static analysis tools
-//                 sh 'vendor/bin/phpcs --standard=PSR12 app/'
-//             }
-//         }
-
-//         stage('Build Frontend') {
-//             steps {
-//                 // Install Node.js dependencies and build frontend assets
-//                 sh 'npm install'
-//                 sh 'npm run production'
-//             }
-//         }
-
-//         stage('Deploy') {
-//             steps {
-//                 // Optional deployment steps
-//                 echo 'Deployment steps here'
-//             }
-//         }
     }
 
 //     post {
 //         always {
 //             // Cleanup actions
-//             sh 'composer clear-cache'
+//             sh '/Users/jahidulislam/.composer/vendor/bin/composer clear-cache'
 //             deleteDir()
 //         }
 //
